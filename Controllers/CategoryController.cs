@@ -1,4 +1,5 @@
 using Bulky.DataAccess;
+using Bulky.DataAccess.Repository;
 using Bulky.Models.Entities;
 using Bulky.Models.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -8,19 +9,16 @@ namespace Bulky.Controllers;
 
 public class CategoryController : Controller
 {
-    private readonly AppDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CategoryController(AppDbContext dbContext)
+    public CategoryController(IUnitOfWork unitOfWork)
     {
-        _dbContext = dbContext;
+        this._unitOfWork = unitOfWork;
     }
     
     public async Task<IActionResult> Index()
     {
-        var categories = await _dbContext.Categories
-            .Take(10)
-            .OrderBy(x => x.DisplayOrder)
-            .ToListAsync();
+        var categories = await _unitOfWork.Category.Take();
         
         return View(new CategoriesListViewModel
         {
@@ -49,8 +47,8 @@ public class CategoryController : Controller
             return View(category);
         }
         
-        _dbContext.Categories.Add(category);
-        await _dbContext.SaveChangesAsync();
+        _unitOfWork.Category.Add(category);
+        await _unitOfWork.Save();
         TempData["success"] = "Category created";
         return RedirectToAction("Index", "Category");
     }
@@ -60,7 +58,7 @@ public class CategoryController : Controller
     {
         if (id is null or 0) return RedirectToAction("Create", "Category");
         
-        var cat = await _dbContext.Categories.FindAsync(id);
+        var cat = await _unitOfWork.Category.Get(x => x.Id == id);
         if (cat is null)
         {
             TempData["error"] = "Category not found";
@@ -83,18 +81,18 @@ public class CategoryController : Controller
         {
             return View("Create", category);
         }
-        _dbContext.Categories.Update(category);
-        await _dbContext.SaveChangesAsync();
+        _unitOfWork.Category.Update(category);
+        await _unitOfWork.Save();
         TempData["success"] = "Category updated";
         return RedirectToAction("Index",  "Category");
     }
     
     public async Task<IActionResult> Delete(int id)
     {
-        var cat = await _dbContext.Categories.FindAsync(id);
+        var cat = await _unitOfWork.Category.Get(x => x.Id == id);
         if (cat is null) return RedirectToAction("Index", "Category");
-        _dbContext.Categories.Remove(cat);
-        await _dbContext.SaveChangesAsync();
+        _unitOfWork.Category.Delete(cat);
+        await _unitOfWork.Save();
         TempData["success"] = "Category deleted";
         return RedirectToAction("Index", "Category");
     }

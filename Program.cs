@@ -1,4 +1,5 @@
 using Bulky.DataAccess;
+using Bulky.DataAccess.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,8 @@ builder.Services.AddDbContext<AppDbContext>(opts =>
 {
     opts.UseMySql(conn, ServerVersion.AutoDetect(conn));
 });
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
