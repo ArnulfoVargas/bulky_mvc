@@ -1,0 +1,22 @@
+@if (TempData["error"] != null)
+{
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    @* <div class="container bg-danger py-3 mb-4"> *@
+    @*     <h5 class="text-light fw-bold">@TempData["error"]</h5> *@
+    @* </div> *@
+    <script type="text/javascript">
+        toastr.error('@TempData["error"]');
+    </script>
+}
+else if (TempData["success"] != null)
+{
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    @* <div class="container bg-success py-3 mb-4"> *@
+    @*     <h5 class="text-primary fw-bold">@TempData["success"]</h5> *@
+    @* </div> *@
+    <script type="text/javascript">
+        toastr.success('@TempData["success"]');
+    </script>
+}

@@ -1,0 +1,57 @@
+@model Bulky.Models.Models.CategoriesListViewModel
+@{
+}
+
+
+<div class="container">
+    <div class="row pt-4 pb-3">
+        <div class="col-6">
+            <h2 class="text-primary">Category List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Category" asp-action="Create" class="btn-primary btn">
+                <i class="bi bi-plus-circle"></i>
+                Create New
+            </a>
+        </div>
+    </div>
+    
+    <table class="table-striped table">
+        <thead class="table-active fw-bold">
+        <tr>
+            <th>Name</th>
+            <th>Order</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var cat in Model.Categories)
+        {
+            <tr>
+                <td>@cat.Name</td>
+                <td>@cat.DisplayOrder</td>
+                <td class="" role="group">
+                    <div class="btn-group w-75">
+                        <a
+                            class="btn btn-primary mx-2"
+                            asp-controller="Category"
+                            asp-action="Update"
+                            asp-route-id="@cat.Id">
+                            <i class="bi bi-pencil-fill"></i>
+                            Edit
+                        </a>
+                        <a
+                            class="btn btn-danger mx-2"
+                            asp-controller="Category"
+                            asp-action="Delete"
+                            asp-route-id="@cat.Id">
+                            <i class="bi bi-trash-fill"></i>
+                            Delete
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
