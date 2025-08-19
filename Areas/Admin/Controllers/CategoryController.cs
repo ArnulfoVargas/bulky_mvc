@@ -1,12 +1,12 @@
-using Bulky.DataAccess;
 using Bulky.DataAccess.Repository;
 using Bulky.Models.Entities;
 using Bulky.Models.Models;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-namespace Bulky.Controllers;
+namespace Bulky.Areas.Admin.Controllers;
 
+[Area("Admin")]
 public class CategoryController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -64,7 +64,7 @@ public class CategoryController : Controller
             TempData["error"] = "Category not found";
             return RedirectToAction("Create", "Category");
         }
-        
+
         return View("Create",cat);
     }
 

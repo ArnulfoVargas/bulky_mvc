@@ -19,7 +19,13 @@ public class AppDbContext : DbContext
             new() {Id = 4, Name = "Romance", DisplayOrder = 4},
             new() {Id = 5, Name = "Scholar", DisplayOrder = 5},
         });
+
+        modelBuilder.Entity<Product>().HasData(new List<Product>()
+        {
+
+        });
     }
     
     public DbSet<Category> Categories { get; set; }
+    public DbSet<Product> Products { get; set; }
 }
